@@ -240,6 +240,7 @@ def check_foreground_hog(hypothesis, clf, _sz):
 def check_foreground_hog2(hypothesis_HoG, clf):
     predict = clf.predict([hypothesis_HoG.reshape(-1)])[0]
     if predict == 1:
+        #print 'hello'
         return True
     else:
         return False
@@ -296,7 +297,7 @@ pos_main_class = ['./annotation/Acanthamoeba_trophozoite_cyst.txt',
                  ]
 
 pos_files_group = [
-             [#'./annotation_subclass/Sarcocystis_oocyst_single_stage2.txt',
+             ['./annotation_subclass/Sarcocystis_oocyst_single_stage2.txt',
              './annotation_subclass/Sarcocystis_oocyst_single_stage3.txt',
              './annotation_subclass/Sarcocystis_oocyst_stage2.txt',
              #'./annotation_subclass/Sarcocystis_oocyst_stage3.txt'
@@ -513,8 +514,9 @@ for file_dir_idx in range(len(list_images)):
                     hypothesis = img_gray[int(_i*HoG_pixels_per_cell[1]):int(_i*HoG_pixels_per_cell[1]+ filter_sz[0]), int(_j*HoG_pixels_per_cell[0]):int(_j*HoG_pixels_per_cell[0]+ filter_sz[1])]
                     #if check_foreground(hypothesis, max_errors[filter_sz_idx],min_norms[filter_sz_idx],
                     #                    xsmall, xlarge,ux,sx,vx,datamean, datamax,k):
-                    if check_foreground_hog2(hypothesis_HoG, root_filters[filter_sz_idx]) and check_foreground(hypothesis, max_errors[filter_sz_idx],min_norms[filter_sz_idx],
-                                        xsmall, xlarge,ux,sx,vx,datamean, datamax,k):
+                    if check_foreground_hog2(hypothesis_HoG, root_filters[filter_sz_idx]):
+                    #if check_foreground_hog2(hypothesis_HoG, root_filters[filter_sz_idx]) and check_foreground(hypothesis, max_errors[filter_sz_idx],min_norms[filter_sz_idx],
+                    #                    xsmall, xlarge,ux,sx,vx,datamean, datamax,k):
                     #if check_foreground_hog3(hypothesis_HoG, root_filters[filter_sz_idx],foregroundThresh=0.7) and check_foreground(hypothesis, max_errors[filter_sz_idx],min_norms[filter_sz_idx],
                     #                    xsmall, xlarge,ux,sx,vx,datamean, datamax,k):
                     #if check_foreground_hog(hypothesis, root_filters[filter_sz_idx],filter_sz):
@@ -525,8 +527,8 @@ for file_dir_idx in range(len(list_images)):
                         featureMagnitude_projected = np.dot(featureMagnitude_norm, uxx)
                         category = classifier.predict([featureMagnitude_projected])[0]
                         prob = classifier.predict_proba([featureMagnitude_projected])[0]
-                        print 'prob'
-                        print prob
+                        #print 'prob'
+                        #print prob
                         prob = classifier.predict_proba([featureMagnitude_projected])[0][category]
                         #prob = classifier.predict_proba([featureMagnitude_projected])[0][category] * root_filters[filter_sz_idx].predict_proba([hypothesis_HoG.reshape(-1)])[0][1]
                         #==========================================================================
