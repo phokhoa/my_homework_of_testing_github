@@ -1,0 +1,6 @@
+./data/Sarcocystis_oocyst\Sar_ooc_human_sto_x40_1266.jpg 0
+./data/Sarcocystis_oocyst\Sar_ooc_human_sto_x40_167.jpg 0
+./data/Sarcocystis_oocyst\Sar_ooc_human_sto_x40_1_cut.jpg 0
+./data/Sarcocystis_oocyst\Sar_ooc_human_sto_x40_2.jpg 0
+./data/Sarcocystis_oocyst\Sar_ooc_human_sto_x40_3.jpg 2 703 456 100 149 798 437 94 149
+./data/Sarcocystis_oocyst\Sar_ooc_human_sto_x40_4.jpg 2 704 402 109 105 759 465 114 105

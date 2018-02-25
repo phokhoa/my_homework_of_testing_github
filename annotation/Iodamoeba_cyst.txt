@@ -1,0 +1,6 @@
+./data/Iodamoeba_cyst/Ibu_cys_human_sto_x40_003.jpg 1 727 536 141 126
+./data/Iodamoeba_cyst/Ibu_cys_human_sto_x40_004.jpg 1 729 536 134 125
+./data/Iodamoeba_cyst/Ibu_cys_human_sto_x40_010.jpg 3 507 695 120 99 1112 262 93 118 1500 373 88 100
+./data/Iodamoeba_cyst/Ibu_cys_human_sto_x40_013.jpg 2 224 829 92 112 1067 354 150 119
+./data/Iodamoeba_cyst/Ibu_cys_human_sto_x40_014.jpg 2 632 4 127 98 745 534 148 125
+./data/Iodamoeba_cyst/Ibu_cys_human_sto_x40_015.jpg 1 735 534 104 115

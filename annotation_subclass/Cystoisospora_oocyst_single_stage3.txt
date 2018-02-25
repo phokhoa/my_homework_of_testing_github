@@ -1,0 +1,8 @@
+./data/Cystoisospora_oocyst\Cbe_ooc_human_sto_x40_014_cut.jpg 0
+./data/Cystoisospora_oocyst\Cbe_ooc_human_sto_x40_024_cut.jpg 0
+./data/Cystoisospora_oocyst\Cbe_ooc_human_sto_x40_10_cut.jpg 2 1841 383 196 222 1788 556 185 226
+./data/Cystoisospora_oocyst\Cbe_ooc_human_sto_x40_g015_cut.jpg 0
+./data/Cystoisospora_oocyst\Cbe_ooc_human_sto_x40_g016_cut.jpg 0
+./data/Cystoisospora_oocyst\Cbe_ooc_human_sto_x40_g017_cut.jpg 2 967 573 195 212 1097 477 229 189
+./data/Cystoisospora_oocyst\Cbe_ooc_human_sto_x40_g022_cut.jpg 0
+./data/Cystoisospora_oocyst\Cbe_ooc_human_sto_x40_g023_cut.jpg 0

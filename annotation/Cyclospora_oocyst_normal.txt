@@ -1,0 +1,18 @@
+./data/Cyclospora_oocyst\Cca_ooc_human_sto_x20_120_split_1.jpg 5 864 0 99 85 558 58 113 105 373 272 113 110 1759 47 110 108 2377 0 119 88
+./data/Cyclospora_oocyst\Cca_ooc_human_sto_x20_120_split_2.jpg 3 1575 41 102 98 2070 249 91 92 2291 313 122 114
+./data/Cyclospora_oocyst\Cca_ooc_human_sto_x20_120_split_3.jpg 8 160 191 119 124 204 531 100 101 1157 365 104 101 1418 468 114 114 1699 387 106 98 1703 504 100 100 2390 90 93 91 2834 18 95 88
+./data/Cyclospora_oocyst\Cca_ooc_human_sto_x20_121_split_1.jpg 2 1450 763 124 127 1090 579 132 131
+./data/Cyclospora_oocyst\Cca_ooc_human_sto_x20_121_split_2.jpg 1 2685 488 128 125
+./data/Cyclospora_oocyst\Cca_ooc_human_sto_x20_122_split_1.jpg 2 1453 550 116 113 2021 366 107 102
+./data/Cyclospora_oocyst\Cca_ooc_human_sto_x20_122_split_2.jpg 1 231 385 112 100
+./data/Cyclospora_oocyst\Cca_ooc_human_sto_x20_122_split_3.jpg 0
+./data/Cyclospora_oocyst\Cca_ooc_human_sto_x20_124_split_1.jpg 7 7 0 114 69 606 469 120 120 919 129 124 118 1027 330 119 106 1320 202 103 98 1857 517 104 106 2235 187 114 113
+./data/Cyclospora_oocyst\Cca_ooc_human_sto_x20_124_split_2.jpg 9 270 536 115 101 626 513 98 100 1459 115 116 118 1254 380 119 121 1408 403 123 114 1476 543 122 120 2196 227 121 121 2150 609 134 128 2673 31 128 121
+./data/Cyclospora_oocyst\Cca_ooc_human_sto_x20_124_split_3.jpg 4 178 257 116 117 848 144 119 120 1034 213 114 112 1300 190 110 110
+./data/Cyclospora_oocyst\Cca_ooc_human_sto_x20_1_split_1.jpg 0
+./data/Cyclospora_oocyst\Cca_ooc_human_sto_x20_1_split_2.jpg 0
+./data/Cyclospora_oocyst\Cca_ooc_human_sto_x20_1_split_3.jpg 0
+./data/Cyclospora_oocyst\Cca_ooc_human_sto_x40_1.jpg 1 711 442 101 102
+./data/Cyclospora_oocyst\Cca_ooc_human_sto_x40_116.jpg 0
+./data/Cyclospora_oocyst\Cca_ooc_human_sto_x40_13.jpg 0
+./data/Cyclospora_oocyst\Cca_ooc_human_sto_x40_3.jpg 1 702 466 96 96

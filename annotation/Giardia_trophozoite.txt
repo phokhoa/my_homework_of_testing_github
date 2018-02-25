@@ -1,0 +1,6 @@
+./data/Giardia_trophozoite\Gin_tro_human_sto_x100_10.jpg 1 829 631 162 313
+./data/Giardia_trophozoite\Gin_tro_human_sto_x100_2_resize.jpg 2 480 431 228 206 470 681 148 270
+./data/Giardia_trophozoite\Gin_tro_human_sto_x100_3_resize.jpg 2 549 459 252 231 528 707 176 319
+./data/Giardia_trophozoite\Gin_tro_human_sto_x100_5_resize.jpg 1 626 489 425 344
+./data/Giardia_trophozoite\Gin_tro_human_sto_x100_7_resize.jpg 1 608 394 199 385
+./data/Giardia_trophozoite\Gin_tro_human_sto_x100_8_resize.jpg 1 580 412 193 368

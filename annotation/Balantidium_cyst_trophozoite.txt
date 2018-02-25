@@ -1,0 +1,12 @@
+./data/Balantidium_cyst_trophozoite\Bco_cys_human_sto_x20_3.jpg 1 697 435 174 182
+./data/Balantidium_cyst_trophozoite\Bco_cys_human_sto_x40_6.jpg 1 600 338 299 311
+./data/Balantidium_cyst_trophozoite\Bco_tro_human_sto_x20_2_cut.jpg 1 255 182 379 507
+./data/Balantidium_cyst_trophozoite\Bco_tro_human_sto_x40_10_resize.jpg 1 596 228 358 443
+./data/Balantidium_cyst_trophozoite\Bco_tro_human_sto_x40_3.jpg 3 128 416 426 547 828 127 427 552 1169 52 537 452
+./data/Balantidium_cyst_trophozoite\Bco_tro_human_sto_x40_4.jpg 1 274 145 160 163
+./data/Balantidium_cyst_trophozoite\Bco_tro_human_sto_x40_8.jpg 1 580 357 406 339
+./data/Balantidium_cyst_trophozoite\Bco_tro_human_sto_x40_9_cut_1.jpg 1 302 59 942 762
+./data/Balantidium_cyst_trophozoite\Bco_tro_human_sto_x40_9_cut_2.jpg 1 87 80 728 805
+./data/Balantidium_cyst_trophozoite\Bco_tro_human_sto_x40_9_resize.jpg 1 194 24 598 461
+./data/Balantidium_cyst_trophozoite\Bco_tro_human_sto_x40_9_resize_1.jpg 2 276 30 479 381 759 470 504 519
+./data/Balantidium_cyst_trophozoite\Bco_tro_human_sto_xNA_10_resize.jpg 1 316 350 678 522

@@ -1,0 +1,44 @@
+./data/Cyclospora_oocyst/Cca_ooc_human_sto_x20_120_split_1.jpg 0
+./data/Cyclospora_oocyst/Cca_ooc_human_sto_x20_120_split_2.jpg 0
+./data/Cyclospora_oocyst/Cca_ooc_human_sto_x20_120_split_3.jpg 0
+./data/Cyclospora_oocyst/Cca_ooc_human_sto_x20_121_split_1.jpg 0
+./data/Cyclospora_oocyst/Cca_ooc_human_sto_x20_121_split_2.jpg 0
+./data/Cyclospora_oocyst/Cca_ooc_human_sto_x20_122_split_1.jpg 0
+./data/Cyclospora_oocyst/Cca_ooc_human_sto_x20_122_split_2.jpg 0
+./data/Cyclospora_oocyst/Cca_ooc_human_sto_x20_122_split_3.jpg 0
+./data/Cyclospora_oocyst/Cca_ooc_human_sto_x20_124_split_1.jpg 0
+./data/Cyclospora_oocyst/Cca_ooc_human_sto_x20_124_split_2.jpg 0
+./data/Cyclospora_oocyst/Cca_ooc_human_sto_x20_124_split_3.jpg 0
+./data/Cyclospora_oocyst/Cca_ooc_human_sto_x20_1_split_1.jpg 0
+./data/Cyclospora_oocyst/Cca_ooc_human_sto_x20_1_split_2.jpg 0
+./data/Cyclospora_oocyst/Cca_ooc_human_sto_x20_1_split_3.jpg 0
+./data/Cyclospora_oocyst/Cca_ooc_human_sto_x40_1.jpg 0
+./data/Cyclospora_oocyst/Cca_ooc_human_sto_x40_116.jpg 0
+./data/Cyclospora_oocyst/Cca_ooc_human_sto_x40_13.jpg 0
+./data/Cyclospora_oocyst/Cca_ooc_human_sto_x40_3.jpg 0
+./data/Cystoisospora_oocyst/Cbe_ooc_human_sto_x40_014_cut.jpg 0
+./data/Cystoisospora_oocyst/Cbe_ooc_human_sto_x40_024_cut.jpg 0
+./data/Cystoisospora_oocyst/Cbe_ooc_human_sto_x40_10_cut.jpg 0
+./data/Cystoisospora_oocyst/Cbe_ooc_human_sto_x40_g015_cut.jpg 0
+./data/Cystoisospora_oocyst/Cbe_ooc_human_sto_x40_g016_cut.jpg 0
+./data/Cystoisospora_oocyst/Cbe_ooc_human_sto_x40_g017_cut.jpg 0
+./data/Cystoisospora_oocyst/Cbe_ooc_human_sto_x40_g022_cut.jpg 0
+./data/Cystoisospora_oocyst/Cbe_ooc_human_sto_x40_g023_cut.jpg 0
+./data/Iodamoeba_cyst/Ibu_cys_human_sto_x40_003.jpg 0
+./data/Iodamoeba_cyst/Ibu_cys_human_sto_x40_004.jpg 0
+./data/Iodamoeba_cyst/Ibu_cys_human_sto_x40_010.jpg 0
+./data/Iodamoeba_cyst/Ibu_cys_human_sto_x40_013.jpg 0
+./data/Iodamoeba_cyst/Ibu_cys_human_sto_x40_014.jpg 0
+./data/Iodamoeba_cyst/Ibu_cys_human_sto_x40_015.jpg 0
+./data/Sarcocystis_oocyst/Sar_ooc_human_sto_x40_1266.jpg 0
+./data/Sarcocystis_oocyst/Sar_ooc_human_sto_x40_167.jpg 0
+./data/Sarcocystis_oocyst/Sar_ooc_human_sto_x40_1_cut.jpg 0
+./data/Sarcocystis_oocyst/Sar_ooc_human_sto_x40_2.jpg 0
+./data/Sarcocystis_oocyst/Sar_ooc_human_sto_x40_3.jpg 0
+./data/Sarcocystis_oocyst/Sar_ooc_human_sto_x40_4.jpg 0
+./data/Toxoplasma_cyst/Tgo_cys_hts_x100_1_resize.jpg 1 144 31 627 712
+./data/Toxoplasma_cyst/Tgo_cys_hts_x100_2_resize.jpg 1 144 32 687 871
+./data/Toxoplasma_cyst/Tgo_cys_hts_x40_2_cut.jpg 1 472 403 566 613
+./data/Toxoplasma_cyst/Tgo_cys_hts_x40_3_cut.jpg 1 285 385 569 613
+./data/Toxoplasma_cyst/Tgo_cys_hts_x40_4.jpg 1 686 483 601 569
+./data/Toxoplasma_cyst/Tgo_cys_hts_x40_5.jpg 1 668 497 622 555

@@ -1,0 +1,6 @@
+./data/Toxoplasma_cyst\Tgo_cys_hts_x100_1_resize.jpg 1 144 31 627 712
+./data/Toxoplasma_cyst\Tgo_cys_hts_x100_2_resize.jpg 1 144 32 687 871
+./data/Toxoplasma_cyst\Tgo_cys_hts_x40_2_cut.jpg 1 472 403 566 613
+./data/Toxoplasma_cyst\Tgo_cys_hts_x40_3_cut.jpg 1 285 385 569 613
+./data/Toxoplasma_cyst\Tgo_cys_hts_x40_4.jpg 1 686 483 601 569
+./data/Toxoplasma_cyst\Tgo_cys_hts_x40_5.jpg 1 668 497 622 555

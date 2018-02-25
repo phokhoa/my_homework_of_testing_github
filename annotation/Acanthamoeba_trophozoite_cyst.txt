@@ -1,0 +1,4 @@
+./data/Acanthamoeba_trophozoite_cyst\Aca_tro_cys_human_cul_x40_12_cut.jpg 6 123 406 237 200 286 518 168 154 84 576 244 198 203 692 200 162 332 687 160 162 428 781 214 206
+./data/Acanthamoeba_trophozoite_cyst\Aca_tro_cys_human_cul_x40_13_cut.jpg 7 295 497 188 171 98 539 220 223 247 651 217 221 445 626 192 195 480 518 137 145 604 488 233 223 593 687 204 207
+./data/Acanthamoeba_trophozoite_cyst\Aca_tro_cys_human_cul_x40_14_cut.jpg 5 257 505 175 174 92 557 201 201 223 667 209 205 427 559 173 188 590 531 197 221
+./data/Acanthamoeba_trophozoite_cyst\Aca_tro_cys_human_cul_x40_15_cut.jpg 5 369 501 178 204 200 589 206 216 342 685 188 186 533 573 166 179 697 546 192 205
