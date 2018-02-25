@@ -1,0 +1,9 @@
+
+*.jpg
+*.jpeg
+*.png
+*.pyc
+*.pickle
+outfile*
+*.ipynb
+System Volume Information
