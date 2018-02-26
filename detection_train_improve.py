@@ -459,7 +459,8 @@ for _sz,_spos in zip(sz,spos):
 def KNN(trn, trn_label,num_label,group):
     n_neighbor = 5
     #clf = neighbors.KNeighborsClassifier(n_neighbor, weights='distance')
-    clf = neighbors.KNeighborsClassifier(n_neighbor, weights='distance',metric=mydistance)
+    #clf = neighbors.KNeighborsClassifier(n_neighbor, weights='distance',metric=mydistance)
+    clf = neighbors.KNeighborsClassifier(n_neighbor, weights='uniform',metric=mydistance)
     clf.fit(trn, trn_label)
 
     return clf
@@ -605,7 +606,7 @@ def extract_pos(pos, fsize):
     cx = cur_w/2
     cy = cur_h/2
     res.append(cur_pos[cy-int(fsize[0])/2:cy+int(fsize[0])/2,cx-int(fsize[1])/2:cx+int(fsize[1])/2])
-    if cur_w > fsize[1] or cur_h > fsize[0]:
+    if cur_w > fsize[1] or cur_h > fsize[0] or True:
         for _i in range(num_rand):
             ncx = random.randint(cx-(cur_w - int(fsize[1]))/2, cx+(cur_w - int(fsize[1]))/2)
             ncy = random.randint(cy-(cur_h - int(fsize[0]))/2, cy+(cur_h - int(fsize[0]))/2)
@@ -698,19 +699,19 @@ for _idx in range(len(spos)):
     print 'Start getting Negatives'
     start_time = time.time()
     negs = []
-    for neg in getNegatives(neg_images,_sz,4*len(_sp)):
+    for neg in getNegatives(neg_images,_sz,8*len(_sp)):
         negs.append(neg)
     print 'Done Negative %s seconds'%(time.time()-start_time)
 
 
     print 'Start getting Hard Negative'
     start_time = time.time()
-    negs_per_pos = 5
-    res_rescales,res_translates = get_HardNegatives(sz,spos, _idx, neg_images, 3*len(_sp))
+    negs_per_pos = 10
+    res_rescales,res_translates = get_HardNegatives(sz,spos, _idx, neg_images, 6*len(_sp))
     for neg_rescale, neg_translate in zip(res_rescales,res_translates):
         negs.append(neg_rescale)
         negs.append(neg_translate)
-    #negs.extend(get_dense_HardNegatives(sz,spos, _idx,neg_images, negs_per_pos))
+    negs.extend(get_dense_HardNegatives(sz,spos, _idx,neg_images, negs_per_pos))
     print 'Done Hard Negative %s seconds'%(time.time()-start_time)
     #==================================================================================================
     print 'Start getting HoG of Negatives'
@@ -737,7 +738,8 @@ for _idx in range(len(spos)):
     #clf = svm.LinearSVC(max_iter = -1, class_weight={1:10})
     #clf = svm.LinearSVC(max_iter = 200)
     #clf = svm.LinearSVC(max_iter = 200,class_weight={1:2})
-    clf = svm.LinearSVC(max_iter = 200,class_weight={1:len(negs)/len(root_X)})
+    #clf = svm.LinearSVC(max_iter = 200,class_weight={1:len(negs)/len(root_X)})
+    clf = neighbors.KNeighborsClassifier(n_neighbors=5, weights='distance')
     #clf = svm.SVC(class_weight={1:len(negs)/len(root_X)},kernel='linear',probability=True)
     clf.fit(np.array(X) ,np.array(Y))
     root_filters.append(clf)

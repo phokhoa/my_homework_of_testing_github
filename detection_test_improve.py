@@ -279,7 +279,7 @@ def check_foreground(hypothesis, max_error,min_norm, xsmall, xlarge,ux,sx,vx,dat
     mag_reconstructed = reconstruct_from_pca(mag_projected,ux,sx,vx,datamean, datamax,k)
     reconstructed_error = np.sum((mag_reconstructed-mag_norm)**2)
 
-    if reconstructed_error > max_error or np.sqrt(np.sum(mag_projected[:k/2]**2)) < min_norm:
+    if reconstructed_error > max_error or np.sqrt(np.sum(mag_projected[:k]**2)) < min_norm:
         return False
     else:
         #print '%f vs %f, %f vs %f'%(reconstructed_error,max_error, np.sqrt(np.sum(mag_projected[:k/2]**2)), min_norm)
@@ -452,7 +452,7 @@ overlap = 0.64
 overlap_nms = overlap
 colors = [(0,0,255),(0,255,0),(255,0,0),(255,0,255),(0,255,255),(255,255,0)]
 #scales = range(1,50)
-scales = [1,1.5,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,24,32,48]
+scales = [1,1.5,1.75,2,2.5,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,24,32,48]
 #scales = 2**(1/10)**np.array([1,2,3,4,5,6,7,8,9,10])
 save_dir = './result/improve/'
 detections = []
@@ -526,11 +526,13 @@ for file_dir_idx in range(len(list_images)):
                         featureMagnitude_norm = (featureMagnitude.reshape(-1)-datamean)/datamax
                         featureMagnitude_projected = np.dot(featureMagnitude_norm, uxx)
                         category = classifier.predict([featureMagnitude_projected])[0]
-                        prob = classifier.predict_proba([featureMagnitude_projected])[0]
+                        #prob = classifier.predict_proba([featureMagnitude_projected])[0]
                         #print 'prob'
                         #print prob
                         prob = classifier.predict_proba([featureMagnitude_projected])[0][category]
                         #prob = classifier.predict_proba([featureMagnitude_projected])[0][category] * root_filters[filter_sz_idx].predict_proba([hypothesis_HoG.reshape(-1)])[0][1]
+                        print 'prob'
+                        print prob
                         #==========================================================================
                         #featureMagnitude_norm = (featureMagnitude.reshape(-1)-comp_datamean)/comp_datamax
 
@@ -542,7 +544,7 @@ for file_dir_idx in range(len(list_images)):
                         #cv2.rectangle(img,(_j,_i),(_j+hypothesis.shape[1],_i+hypothesis.shape[0]),(0,255,0),3)
                         #cv2.rectangle(img,(int(_j*scale),int(_i*scale)),(int((_j+hypothesis.shape[1])*scale),int(scale*(_i+hypothesis.shape[0]))),colors[group_category],3)
                         #hypotheses.append((_j*scale*HoG_pixels_per_cell[0],_i*scale*HoG_pixels_per_cell[1],hypothesis.shape[1]*scale, hypothesis.shape[0]*scale,group_category))
-                        if prob > 0.0909:
+                        if prob > 0.8:
                             hypotheses.append((_j*scale*HoG_pixels_per_cell[0],_i*scale*HoG_pixels_per_cell[1],hypothesis.shape[1]*scale, hypothesis.shape[0]*scale,group_category,prob))
             print tag + '_hog_duplicate_res_detected_scale_%d_filter_%d.png'%(scale,filter_sz_idx)
             print 'Detection %s seconds'%(time.time()-start_time)
