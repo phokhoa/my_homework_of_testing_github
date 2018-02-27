@@ -478,7 +478,7 @@ def SVM(trn, trn_label,num_label,group):
     return clf
 
 # In[11]:
-
+"""
 pca_keep = 0.9
 train_samples = np.array([x.reshape(-1) for x,l,p in samples_train])
 train_samples_labels = np.array([l for x,l,p in samples_train])
@@ -494,7 +494,7 @@ X_train_projected = np.dot(X_train_norm, uxx)
 classifier = KNN(X_train_projected, train_samples_labels,num_label,group)
 #classifier = SVM(X_train_projected, train_samples_labels,num_label,group)
 print 'Done train classifiers'
-
+"""
 
 # In[12]:
 
@@ -516,20 +516,7 @@ reconstructed = np.array(reconstructed)
 max_error = np.max(np.sum((X_train_norm - reconstructed)**2,axis=1))
 """
 
-max_errors = []
-min_norms = []
-for _sp in spos:
-    sp_train_samples = np.array([x.reshape(-1) for x,l,p in _sp])
-    sp_train_samples_norm = (sp_train_samples - datamean) / datamax
-    sp_train_samples_projected = np.dot(sp_train_samples_norm, uxx)
-    min_norms.append(np.min(np.sqrt(np.sum(sp_train_samples_projected[:,:k]**2, axis=1))))
-    reconstructed = []
-    for trn_sample in sp_train_samples_projected:
-        reconstructed.append(reconstruct_from_pca(trn_sample,ux,sx,vx,datamean, datamax,k))
 
-    reconstructed = np.array(reconstructed)
-    max_error = np.max(np.sum((sp_train_samples_norm - reconstructed)**2,axis=1))
-    max_errors.append(max_error)
 
 
 
@@ -655,6 +642,7 @@ for _idx in range(len(spos)):
         for ext in extracted:
             _, ext_mag = highpass_and_imgback(ext,xsmall,xlarge)
             samples_train.append((ext_mag,p[1],ext))
+            _nsp.append((ext_mag,p[1],ext))
         #====================================================================
     print '     Done extracting positives, Start computing HoG'
     print 'len root_X: %d'%(len(_nsp))
@@ -706,8 +694,8 @@ for _idx in range(len(spos)):
 
     print 'Start getting Hard Negative'
     start_time = time.time()
-    negs_per_pos = 10
-    res_rescales,res_translates = get_HardNegatives(sz,spos, _idx, neg_images, 6*len(_sp))
+    negs_per_pos = 16
+    res_rescales,res_translates = get_HardNegatives(sz,spos, _idx, neg_images, 1*len(_sp))
     for neg_rescale, neg_translate in zip(res_rescales,res_translates):
         negs.append(neg_rescale)
         negs.append(neg_translate)
@@ -739,7 +727,8 @@ for _idx in range(len(spos)):
     #clf = svm.LinearSVC(max_iter = 200)
     #clf = svm.LinearSVC(max_iter = 200,class_weight={1:2})
     #clf = svm.LinearSVC(max_iter = 200,class_weight={1:len(negs)/len(root_X)})
-    clf = neighbors.KNeighborsClassifier(n_neighbors=5, weights='distance')
+    clf = svm.LinearSVC(class_weight={1:len(negs)/len(root_X)})
+    #clf = neighbors.KNeighborsClassifier(n_neighbors=5, weights='distance')
     #clf = svm.SVC(class_weight={1:len(negs)/len(root_X)},kernel='linear',probability=True)
     clf.fit(np.array(X) ,np.array(Y))
     root_filters.append(clf)
@@ -761,6 +750,23 @@ X_train_projected = np.dot(X_train_norm, uxx)
 classifier = KNN(X_train_projected, train_samples_labels,num_label,group)
 #classifier = SVM(X_train_projected, train_samples_labels,num_label,group)
 print 'Done train classifiers'
+
+max_errors = []
+min_norms = []
+for _sp, comp_para in zip(spos, comp_parameters):
+    comp_ux,comp_sx,comp_vx,comp_datamean, comp_datamax, comp_k = comp_para
+    comp_uxx = comp_ux[:,:comp_k]
+    sp_train_samples = np.array([x.reshape(-1) for x,l,p in _sp])
+    sp_train_samples_norm = (sp_train_samples - comp_datamean) / comp_datamax
+    sp_train_samples_projected = np.dot(sp_train_samples_norm, comp_uxx)
+    min_norms.append(np.min(np.sqrt(np.sum(sp_train_samples_projected[:,:k]**2, axis=1))))
+    reconstructed = []
+    for trn_sample in sp_train_samples_projected:
+        reconstructed.append(reconstruct_from_pca(trn_sample,comp_ux,comp_sx,comp_vx,comp_datamean, comp_datamax,k))
+
+    reconstructed = np.array(reconstructed)
+    max_error = np.max(np.sum((sp_train_samples_norm - reconstructed)**2,axis=1))
+    max_errors.append(max_error)
 
 save_file = "myModel_improved.pickle"
 with open(save_file,'wb') as f:

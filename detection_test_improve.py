@@ -514,9 +514,9 @@ for file_dir_idx in range(len(list_images)):
                     hypothesis = img_gray[int(_i*HoG_pixels_per_cell[1]):int(_i*HoG_pixels_per_cell[1]+ filter_sz[0]), int(_j*HoG_pixels_per_cell[0]):int(_j*HoG_pixels_per_cell[0]+ filter_sz[1])]
                     #if check_foreground(hypothesis, max_errors[filter_sz_idx],min_norms[filter_sz_idx],
                     #                    xsmall, xlarge,ux,sx,vx,datamean, datamax,k):
-                    if check_foreground_hog2(hypothesis_HoG, root_filters[filter_sz_idx]):
-                    #if check_foreground_hog2(hypothesis_HoG, root_filters[filter_sz_idx]) and check_foreground(hypothesis, max_errors[filter_sz_idx],min_norms[filter_sz_idx],
-                    #                    xsmall, xlarge,ux,sx,vx,datamean, datamax,k):
+                    #if check_foreground_hog2(hypothesis_HoG, root_filters[filter_sz_idx]):
+                    if check_foreground_hog2(hypothesis_HoG, root_filters[filter_sz_idx]) and check_foreground(hypothesis, max_errors[filter_sz_idx],min_norms[filter_sz_idx],
+                                        xsmall, xlarge,ux,sx,vx,datamean, datamax,k):
                     #if check_foreground_hog3(hypothesis_HoG, root_filters[filter_sz_idx],foregroundThresh=0.7) and check_foreground(hypothesis, max_errors[filter_sz_idx],min_norms[filter_sz_idx],
                     #                    xsmall, xlarge,ux,sx,vx,datamean, datamax,k):
                     #if check_foreground_hog(hypothesis, root_filters[filter_sz_idx],filter_sz):
