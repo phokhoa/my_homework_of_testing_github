@@ -245,6 +245,18 @@ def check_foreground_hog2(hypothesis_HoG, clf):
     else:
         return False
 
+def check_foreground_hog_PCA(hypothesis_HoG, clf, hog_comp_parameter):
+    hog_comp_ux,hog_comp_sx,hog_comp_vx,hog_comp_datamean, hog_comp_datamax, hog_comp_k = hog_comp_parameter
+
+    hog_norm = (hypothesis_HoG.reshape(-1) - hog_comp_datamean) / hog_comp_datamax
+    hog_projected = np.dot(hog_norm, hog_comp_ux[:,:hog_comp_k])
+    predict = clf.predict([hog_projected])[0]
+    if predict == 1:
+        #print 'hello'
+        return True
+    else:
+        return False
+
 def check_foreground_hog3(hypothesis_HoG, clf, foregroundThresh):
     predict = clf.predict_proba([hypothesis_HoG.reshape(-1)])[0][1]
     if predict >= foregroundThresh:
@@ -324,8 +336,8 @@ numlabel = len(pos_files)
 
 print 'Loading model'
 start_time = time.time()
-with open("myModel_improved.pickle",'rb') as f:
-    classifier,names,sz,ux,sx,vx,datamean, datamax, k,comp_parameters,root_filters,max_errors,min_norms,max_scales,min_scales,xlarge,xsmall,HoG_pixels_per_cell,HoG_cells_per_block = pickle.load(f)
+with open("myModel_improved2.pickle",'rb') as f:
+    classifier,names,sz,ux,sx,vx,datamean, datamax, k,comp_parameters,root_filters,hog_comp_parameters,max_errors,min_norms,max_scales,min_scales,xlarge,xsmall,HoG_pixels_per_cell,HoG_cells_per_block = pickle.load(f)
 uxx = ux[:,:k]
 print 'Done loading model %s s'%(time.time() - start_time)
 detection_dirs = ['./data/Sarcocystis_oocyst/',
@@ -515,7 +527,9 @@ for file_dir_idx in range(len(list_images)):
                     #if check_foreground(hypothesis, max_errors[filter_sz_idx],min_norms[filter_sz_idx],
                     #                    xsmall, xlarge,ux,sx,vx,datamean, datamax,k):
                     #if check_foreground_hog2(hypothesis_HoG, root_filters[filter_sz_idx]):
-                    if check_foreground_hog2(hypothesis_HoG, root_filters[filter_sz_idx]) and check_foreground(hypothesis, max_errors[filter_sz_idx],min_norms[filter_sz_idx],
+                    #if check_foreground_hog2(hypothesis_HoG, root_filters[filter_sz_idx]) and check_foreground(hypothesis, max_errors[filter_sz_idx],min_norms[filter_sz_idx],
+                    #                    xsmall, xlarge,ux,sx,vx,datamean, datamax,k):
+                    if check_foreground_hog_PCA(hypothesis_HoG, root_filters[filter_sz_idx],hog_comp_parameters[filter_sz_idx]) and check_foreground(hypothesis, max_errors[filter_sz_idx],min_norms[filter_sz_idx],
                                         xsmall, xlarge,ux,sx,vx,datamean, datamax,k):
                     #if check_foreground_hog3(hypothesis_HoG, root_filters[filter_sz_idx],foregroundThresh=0.7) and check_foreground(hypothesis, max_errors[filter_sz_idx],min_norms[filter_sz_idx],
                     #                    xsmall, xlarge,ux,sx,vx,datamean, datamax,k):
@@ -544,7 +558,7 @@ for file_dir_idx in range(len(list_images)):
                         #cv2.rectangle(img,(_j,_i),(_j+hypothesis.shape[1],_i+hypothesis.shape[0]),(0,255,0),3)
                         #cv2.rectangle(img,(int(_j*scale),int(_i*scale)),(int((_j+hypothesis.shape[1])*scale),int(scale*(_i+hypothesis.shape[0]))),colors[group_category],3)
                         #hypotheses.append((_j*scale*HoG_pixels_per_cell[0],_i*scale*HoG_pixels_per_cell[1],hypothesis.shape[1]*scale, hypothesis.shape[0]*scale,group_category))
-                        if prob > 0.008:
+                        if prob > 0.8:
                             hypotheses.append((_j*scale*HoG_pixels_per_cell[0],_i*scale*HoG_pixels_per_cell[1],hypothesis.shape[1]*scale, hypothesis.shape[0]*scale,group_category,prob))
             print tag + '_hog_duplicate_res_detected_scale_%d_filter_%d.png'%(scale,filter_sz_idx)
             print 'Detection %s seconds'%(time.time()-start_time)
@@ -563,7 +577,7 @@ for file_dir_idx in range(len(list_images)):
     detections.append((file_dir,detection))
 
 #print detections
-with open(save_dir+'result_improved.pickle','wb') as f:
+with open(save_dir+'result_improved2.pickle','wb') as f:
 	pickle.dump(detections,f)
 
 for _c in range(len(names)):
@@ -641,5 +655,5 @@ for _c in range(len(names)):
 	else:
 		mAP.append((ap,0,0))
 print mAP
-with open(save_dir+'mAP_improved.pickle','wb') as f:
+with open(save_dir+'mAP_improved2.pickle','wb') as f:
 	pickle.dump(mAP,f)

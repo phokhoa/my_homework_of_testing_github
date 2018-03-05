@@ -648,6 +648,7 @@ def extract_pos(pos, fsize):
 
 
 root_filters = []
+hog_comp_parameters = []
 comp_classifiers = []
 comp_parameters = []
 for _idx in range(len(spos)):
@@ -738,7 +739,7 @@ for _idx in range(len(spos)):
 
     print 'Start getting Hard Negative'
     start_time = time.time()
-    negs_per_pos = 5
+    negs_per_pos = 1
     """
     res_rescales,res_translates = get_HardNegatives(sz,spos, _idx, neg_images, 1*len(_sp))
     for neg_rescale, neg_translate in zip(res_rescales,res_translates):
@@ -769,6 +770,12 @@ for _idx in range(len(spos)):
     print 'Start getting HoG classifier'
     start_time = time.time()
 
+    hog_comp_ux,hog_comp_sx,hog_comp_vx,hog_comp_datamean, hog_comp_datamax, hog_comp_k = customPCA(np.array(X), pca_keep)
+    hog_comp_parameters.append((hog_comp_ux,hog_comp_sx,hog_comp_vx,hog_comp_datamean, hog_comp_datamax, hog_comp_k))
+    hog_comp_X_train_norm = (X - hog_comp_datamean)/hog_comp_datamax
+    hog_comp_uxx = hog_comp_ux[:,:hog_comp_k]
+    hog_comp_X_train_projected = np.dot(hog_comp_X_train_norm,hog_comp_uxx)
+
     #clf = svm.LinearSVC(max_iter = -1, class_weight={1:10})
     #clf = svm.LinearSVC(max_iter = 200)
     #clf = svm.LinearSVC(max_iter = 200,class_weight={1:2})
@@ -776,26 +783,31 @@ for _idx in range(len(spos)):
     #clf = svm.LinearSVC(class_weight={1:len(negs)/len(root_X)})
     #clf = neighbors.KNeighborsClassifier(n_neighbors=5, weights='distance')
     clf = svm.SVC(class_weight={1:len(negs)/len(root_X)},kernel='linear',probability=True)
-    clf.fit(np.array(X) ,np.array(Y))
+    #clf.fit(np.array(X) ,np.array(Y))
+    clf.fit(hog_comp_X_train_projected,np.array(Y))
     root_filters.append(clf)
 
     print 'Done HoG classifier %s seconds'%(time.time()-start_time)
 
+print 'Start getting main classifier'
+start_time = time.time()
+print 'len samples %s'%(len(samples_train))
 pca_keep = 0.9
 train_samples = np.array([x.reshape(-1) for x,l,p in samples_train])
 train_samples_labels = np.array([l for x,l,p in samples_train])
 train_samples_unified_labels = unify_label(train_samples_labels,group)
 
 ux,sx,vx,datamean, datamax, k = customPCA(train_samples, pca_keep)
+print 'Done getting PCA %s seconds'%(time.time()-start_time)
 
 uxx = ux[:,:k]
 X_train_norm = (train_samples - datamean) / datamax
 X_train_projected = np.dot(X_train_norm, uxx)
 #X_train_projected = np.dot(X_train_norm, uxx)/np.sqrt(sx[:k])
 #get classifier
-#classifier = KNN(X_train_projected, train_samples_labels,num_label,group)
-classifier = SVM(X_train_projected, train_samples_labels,num_label,group)
-print 'Done train classifiers'
+classifier = KNN(X_train_projected, train_samples_labels,num_label,group)
+#classifier = SVM(X_train_projected, train_samples_labels,num_label,group)
+print 'Done training main classifier %s seconds'%(time.time()-start_time)
 
 max_errors = []
 min_norms = []
@@ -814,9 +826,9 @@ for _sp, comp_para in zip(spos, comp_parameters):
     max_error = np.max(np.sum((sp_train_samples_norm - reconstructed)**2,axis=1))
     max_errors.append(max_error)
 
-save_file = "myModel_improved.pickle"
+save_file = "myModel_improved2.pickle"
 with open(save_file,'wb') as f:
-    pickle.dump((classifier,names,sz,ux,sx,vx,datamean, datamax, k,comp_parameters,root_filters,max_errors,min_norms,max_scales,min_scales,xlarge,xsmall,HoG_pixels_per_cell,HoG_cells_per_block),f)
+    pickle.dump((classifier,names,sz,ux,sx,vx,datamean, datamax, k,comp_parameters,root_filters,hog_comp_parameters,max_errors,min_norms,max_scales,min_scales,xlarge,xsmall,HoG_pixels_per_cell,HoG_cells_per_block),f)
 
 print 'Done training, file is saved as ' + save_file
 # In[ ]:

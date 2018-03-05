@@ -245,6 +245,18 @@ def check_foreground_hog2(hypothesis_HoG, clf):
     else:
         return False
 
+def check_foreground_hog_PCA(hypothesis_HoG, clf, hog_comp_parameter):
+    hog_comp_ux,hog_comp_sx,hog_comp_vx,hog_comp_datamean, hog_comp_datamax, hog_comp_k = hog_comp_parameter
+
+    hog_norm = (hypothesis_HoG.reshape(-1) - hog_comp_datamean) / hog_comp_datamax
+    hog_projected = np.dot(hog_norm, hog_comp_ux[:,:hog_comp_k])
+    predict = clf.predict([hog_projected])[0]
+    if predict == 1:
+        #print 'hello'
+        return True
+    else:
+        return False
+
 def check_foreground_hog3(hypothesis_HoG, clf, foregroundThresh):
     predict = clf.predict_proba([hypothesis_HoG.reshape(-1)])[0][1]
     if predict >= foregroundThresh:
@@ -324,8 +336,8 @@ numlabel = len(pos_files)
 
 print 'Loading model'
 start_time = time.time()
-with open("myModel_improved.pickle",'rb') as f:
-    classifier,names,sz,ux,sx,vx,datamean, datamax, k,comp_parameters,root_filters,max_errors,min_norms,max_scales,min_scales,xlarge,xsmall,HoG_pixels_per_cell,HoG_cells_per_block = pickle.load(f)
+with open("myModel_improved2.pickle",'rb') as f:
+    classifier,names,sz,ux,sx,vx,datamean, datamax, k,comp_parameters,root_filters,hog_comp_parameters,max_errors,min_norms,max_scales,min_scales,xlarge,xsmall,HoG_pixels_per_cell,HoG_cells_per_block = pickle.load(f)
 uxx = ux[:,:k]
 print 'Done loading model %s s'%(time.time() - start_time)
 detection_dirs = ['./data/Sarcocystis_oocyst/',
@@ -499,53 +511,76 @@ for file_dir_idx in range(len(list_images)):
 
             comp_ux,comp_sx,comp_vx,comp_datamean, comp_datamax, comp_k = comp_parameters[filter_sz_idx]
             comp_uxx = comp_ux[:,:comp_k]
-            #print comp_k
 
-            #for _i in range(0,img_gray.shape[0],int(filter_sz[0])/2 ):
-            #    for _j in range(0,img_gray.shape[1],int(filter_sz[1])/2 ):
-            #for _i in range(0,img_gray.shape[0],int(filter_sz[0])/8):
-            #    for _j in range(0,img_gray.shape[1], int(filter_sz[1])/8):
+            hog_comp_ux,hog_comp_sx,hog_comp_vx,hog_comp_datamean, hog_comp_datamax, hog_comp_k = hog_comp_parameters[filter_sz_idx]
+            hog_comp_uxx = hog_comp_ux[:,:hog_comp_k]
+
+            hypotheses_HoG = []
+            hypotheses_img = []
+            locs = []
+
             for _i in range(hog_feature_map.shape[0] - int(_sz_HoG[0])):
                 for _j in range(hog_feature_map.shape[1]- int(_sz_HoG[1])):
 
                     hypothesis_HoG = hog_feature_map[_i:int(_i+_sz_HoG[0]), _j:int(_j+_sz_HoG[1])]
-                    #print hypothesis_HoG.shape
+                    hypotheses_HoG.append(hypothesis_HoG)
 
-                    hypothesis = img_gray[int(_i*HoG_pixels_per_cell[1]):int(_i*HoG_pixels_per_cell[1]+ filter_sz[0]), int(_j*HoG_pixels_per_cell[0]):int(_j*HoG_pixels_per_cell[0]+ filter_sz[1])]
-                    #if check_foreground(hypothesis, max_errors[filter_sz_idx],min_norms[filter_sz_idx],
-                    #                    xsmall, xlarge,ux,sx,vx,datamean, datamax,k):
-                    #if check_foreground_hog2(hypothesis_HoG, root_filters[filter_sz_idx]):
-                    if check_foreground_hog2(hypothesis_HoG, root_filters[filter_sz_idx]) and check_foreground(hypothesis, max_errors[filter_sz_idx],min_norms[filter_sz_idx],
-                                        xsmall, xlarge,ux,sx,vx,datamean, datamax,k):
-                    #if check_foreground_hog3(hypothesis_HoG, root_filters[filter_sz_idx],foregroundThresh=0.7) and check_foreground(hypothesis, max_errors[filter_sz_idx],min_norms[filter_sz_idx],
-                    #                    xsmall, xlarge,ux,sx,vx,datamean, datamax,k):
-                    #if check_foreground_hog(hypothesis, root_filters[filter_sz_idx],filter_sz):
+                    hypothesis_img = img_gray[int(_i*HoG_pixels_per_cell[1]):int(_i*HoG_pixels_per_cell[1]+ filter_sz[0]), int(_j*HoG_pixels_per_cell[0]):int(_j*HoG_pixels_per_cell[0]+ filter_sz[1])]
+                    hypotheses_img.append(hypothesis_img)
 
-                        #print hypothesis.shape
-                        _, featureMagnitude = highpass_and_imgback(hypothesis,xsmall,xlarge)
-                        featureMagnitude_norm = (featureMagnitude.reshape(-1)-datamean)/datamax
-                        featureMagnitude_projected = np.dot(featureMagnitude_norm, uxx)
-                        category = classifier.predict([featureMagnitude_projected])[0]
-                        #prob = classifier.predict_proba([featureMagnitude_projected])[0]
-                        #print 'prob'
-                        #print prob
-                        prob = classifier.predict_proba([featureMagnitude_projected])[0][category]
-                        #prob = classifier.predict_proba([featureMagnitude_projected])[0][category] * root_filters[filter_sz_idx].predict_proba([hypothesis_HoG.reshape(-1)])[0][1]
-                        print 'prob'
-                        print prob
-                        #==========================================================================
-                        #featureMagnitude_norm = (featureMagnitude.reshape(-1)-comp_datamean)/comp_datamax
+                    locs.append((_j*scale*HoG_pixels_per_cell[0],_i*scale*HoG_pixels_per_cell[1],hypothesis.shape[1]*scale, hypothesis.shape[0]*scale))
 
-                        #featureMagnitude_projected = np.dot(featureMagnitude_norm, comp_uxx)
+            #=================== check HoG foreground ========================
+            hypotheses_HoG_norm = (np.array(hypotheses_HoG)-hog_comp_datamean)/hog_comp_datamax
+            hypotheses_HoG_projected = np.dot(hypotheses_HoG_norm, hog_comp_uxx)
+            HoG_pass = root_filters[filter_sz_idx].predict(hypotheses_HoG_projected)
 
-                        #category = comp_classifiers[filter_sz_idx].predict([featureMagnitude_projected])[0]
-                        #==========================================================================
-                        group_category = unify_label([category],group)[0]
-                        #cv2.rectangle(img,(_j,_i),(_j+hypothesis.shape[1],_i+hypothesis.shape[0]),(0,255,0),3)
-                        #cv2.rectangle(img,(int(_j*scale),int(_i*scale)),(int((_j+hypothesis.shape[1])*scale),int(scale*(_i+hypothesis.shape[0]))),colors[group_category],3)
-                        #hypotheses.append((_j*scale*HoG_pixels_per_cell[0],_i*scale*HoG_pixels_per_cell[1],hypothesis.shape[1]*scale, hypothesis.shape[0]*scale,group_category))
-                        if prob > 0.008:
-                            hypotheses.append((_j*scale*HoG_pixels_per_cell[0],_i*scale*HoG_pixels_per_cell[1],hypothesis.shape[1]*scale, hypothesis.shape[0]*scale,group_category,prob))
+            hypotheses_HoG = [hypo for hypo, keep in zip(hypotheses_HoG,HoG_pass) if keep == 1]
+            hypotheses_img = [hypo for hypo, keep in zip(hypotheses_img,HoG_pass) if keep == 1]
+            locs = [loc for loc, keep in zip(locs,HoG_pass) if keep == 1]
+            #=================================================================
+            #compute Fourier transform
+            mags = [highpass_and_imgback(hypo,xsmall,xlarge)[1].reshape(-1) for hypo in hypotheses_img]
+
+            #================== check norm ===================================
+            mags_norm = (np.array(mags)- comp_datamean)/comp_datamax
+            mags_projected = np.dot(mags_norm, comp_uxx)
+            norm_pass = [np.sqrt(np.sum(mag_projected[:comp_k]**2)) >= min_norms[filter_sz_idx] for mag_projected in mags_projected]
+
+            hypotheses_HoG = [hypo for hypo, keep in zip(hypotheses_HoG,norm_pass) if keep == True]
+            hypotheses_img = [hypo for hypo, keep in zip(hypotheses_img,norm_pass) if keep == True]
+            locs = [loc for loc, keep in zip(locs,norm_pass) if keep == True]
+            mags = [mag for mag, keep in zip(mags,norm_pass) if keep == True]
+
+            mags_projected = [mag for mag, keep in zip(mags_projected,norm_pass) if keep == True]
+            mags_norm = [mag for mag, keep in zip(mags_norm,norm_pass) if keep == True]
+            #=================================================================
+            #================== check reconstructed error ====================
+            mags_reconstructed = [reconstruct_from_pca(mag_projected,comp_ux,comp_sx,comp_vx,comp_datamean, comp_datamax,comp_k) for mag_projected in mags_projected]
+            reconstructed_errors = np.sum((np.array(mag_reconstructed)-np.array(mag_norm))**2, axis=1)
+
+            reconstruct_pass = [reconstructed_error <= max_errors[filter_sz_idx] for reconstructed_error in reconstructed_errors]
+
+            hypotheses_HoG = [hypo for hypo, keep in zip(hypotheses_HoG,reconstruct_pass) if keep == True]
+            hypotheses_img = [hypo for hypo, keep in zip(hypotheses_img,reconstruct_pass) if keep == True]
+            locs = [loc for loc, keep in zip(locs,reconstruct_pass) if keep == True]
+            mags = [mag for mag, keep in zip(mags,reconstruct_pass) if keep == True]
+            #=================================================================
+            #================= classify =======================================
+            mags_norm = (np.array(mags)- datamean)/datamax
+            mags_projected = np.dot(mags_norm, uxx)
+
+
+            probs = classifier.predict_proba(mags_projected)
+            categories = np.argmax(probs, axis = 1)
+            probs = probs[range(len(probs)), categories]
+            group_categories = unify_label(categories,group)
+
+            prob_thresh = 0.8
+            good_hypotheses = [(loc[0],loc[1],loc[2],loc[3], cate, prob) for loc, cate, prob in zip(locs,group_categories,probs) if prob > prob_thresh]
+
+            hypotheses.extend(good_hypotheses)
+            #=================================================================
             print tag + '_hog_duplicate_res_detected_scale_%d_filter_%d.png'%(scale,filter_sz_idx)
             print 'Detection %s seconds'%(time.time()-start_time)
     temp_img = img.copy()
